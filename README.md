@@ -4,6 +4,8 @@ This is a quick script I wrote to help parse the config.plist file used for Open
 
 It has a few useful features
 
+ - Checks for the running operating system and maps the required version of OCValidate
+   
  - Checks the config.plist with OCValidate (Includes version 1.0.4, but 
    can be changed as needed)
       
