@@ -100,7 +100,7 @@ BOOTARGS=$(grep -A1 boot-arg "$PLIST" | head -n2 | tail -n1 | uniq | cut -d \< -
 SMBIOS=$(egrep -A1 'MLB|ROM|SystemProductName|SystemSerialNumber|SystemUUID' "$PLIST" | uniq | cut -d \< -f2 | cut -d \> -f2 | sed '/^--$/d' | sed 's/MLB/Board ID/g' | sed 's/ROM/\nROM/g' | sed 's/SystemProductName/\nModel Name/g' | sed 's/SystemSerialNumber/\nSerial Number/g' | sed 's/SystemUUID/\nUUID/g')
 FRAMEBUFFERS=$(egrep -A1 'framebuffer|AAPL,ig-platform-id' "$PLIST" | tr -d '[:blank:]' | cut -d \< -f2 | cut -d \> -f2 | sed '/^$/d')
 SECUREBOOTMODEL=$(egrep -A1 'SecureBootModel' "$PLIST" | cut -d \< -f2 | cut -d \> -f2 | tail -n 1)
-OPENCANOPYCHECK=$(grep -i -A1 OpenCanopy "/Volumes/Storage/Downloads/config.plist" | grep -v LoadEarly | grep key | cut -d \< -f2 | cut -d \> -f2 | sed '/^$/d')
+OPENCANOPYCHECK=$(grep -i OpenCanopy "$PLIST" | tail -n 1)
 KEYBOARDLANGUAGESET=$(grep -A1 prev-lang:kbd "$PLIST" | egrep 'data|string' | cut -d \< -f2 | cut -d \> -f2 | sed 's/^$/'None'/g' | egrep -v 'backlight|prev-lang' | cut -d , -f2 | sed 's/ set /''/g' | grep -v 'run-efi-updater' | sed '/^$/d')
 
 # Runs the plist through OCValidate
@@ -172,7 +172,7 @@ printf -- "${GREEN}\n"
 # Checks if OpenCanopy is enabled/disabled
 printf -- "Open Canopy:\n"
 printf -- "${GRAY}\n"
-if [[ $OPENCANOPYCHECK == Enabled ]]; then
+if [[ $OPENCANOPYCHECK =~ (OpenCanopy.efi) ]]; then
     printf -- "Enabled\n"
 else
     printf -- "Disabled\n"
