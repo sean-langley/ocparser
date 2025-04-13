@@ -111,9 +111,8 @@ $OCVALIDATE "$PLIST" | grep -v NOTE | sed '1{/^$/d;}' | sed $'1{/^$/d\n}'
 # Checks the headers section of the file
 printf -- "${GREEN}\n"
 printf -- "Headers Section:\n"
-printf -- "$HEADERS"
 printf -- "${GRAY}\n"
-
+printf -- "$HEADERS\n"
 printf -- "\n"
 
 # Checks the drivers section of the file
