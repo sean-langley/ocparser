@@ -172,7 +172,7 @@ printf -- "${GREEN}\n"
 # Checks if OpenCanopy is enabled/disabled
 printf -- "Open Canopy:\n"
 printf -- "${GRAY}\n"
-if [[ $OPENCANOPYCHECK =~ (Enabled) ]]; then
+if [[ $OPENCANOPYCHECK == Enabled ]]; then
     printf -- "Enabled\n"
 else
     printf -- "Disabled\n"
