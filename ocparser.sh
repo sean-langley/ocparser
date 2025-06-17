@@ -101,7 +101,8 @@ SMBIOS=$(egrep -A1 'MLB|ROM|SystemProductName|SystemSerialNumber|SystemUUID' "$P
 FRAMEBUFFERS=$(egrep -A1 'framebuffer|AAPL,ig-platform-id' "$PLIST" | tr -d '[:blank:]' | cut -d \< -f2 | cut -d \> -f2 | sed '/^$/d')
 SECUREBOOTMODEL=$(egrep -A1 'SecureBootModel' "$PLIST" | cut -d \< -f2 | cut -d \> -f2 | tail -n 1)
 OPENCANOPYCHECK=$(grep -i OpenCanopy "$PLIST" | tail -n 1)
-KEYBOARDLANGUAGESET=$(grep -A1 prev-lang:kbd "$PLIST" | egrep 'data|string' | cut -d \< -f2 | cut -d \> -f2 | sed 's/^$/'None'/g' | egrep -v 'backlight|prev-lang' | cut -d , -f2 | sed 's/ set /''/g' | grep -v 'run-efi-updater' | sed '/^$/d')
+KEYBOARDLANGUAGESET=$(grep -A1 prev-lang:kbd "$PLIST" | egrep 'string|data' | cut -d \< -f2 | cut -d \> -f2 | sed 's/^$/'None'/g' | egrep -v 'backlight|prev-lang' | cut -d , -f2 | sed 's/ set /''/g' | grep -v 'run-efi-updater' | sed '/^$/d')
+KEYBOARDLANGUAGESETSTRING=$(grep -A1 prev-lang:kbd "$PLIST" | egrep 'string|data' | grep -B1 kbd | head -n 1 | cut -d \< -f2 | cut -d \> -f1 | sed s/string/String/g | sed s/data/Data/g)
 
 # Runs the plist through OCValidate
 printf -- "OpenCore Validate Check (v$OCVALIDATEVERSION): ${WHITE}\n"
@@ -146,7 +147,7 @@ read -ra ARG_ARRAY <<< "$BOOTARGS"
 BOOTARGSCOUNT=${#ARG_ARRAY[@]}
 printf -- "$BOOTARGS\n"
 printf -- "${RED}\n"
-printf -- "Total boot-args: $BOOTARGSCOUNT" 
+printf -- "Total boot-args: $BOOTARGSCOUNT"
 printf -- "${GREEN}\n"
 
 # Checks for SMBIOS information in the file
@@ -182,5 +183,9 @@ printf -- "${GREEN}\n"
 printf -- "Keyboard Language Set:\n"
 printf -- "${GRAY}\n"
 printf -- "$KEYBOARDLANGUAGESET\n"
+printf -- "${GREEN}\n"
+printf -- "Keyboard Language Field Type:\n"
+printf -- "${GRAY}\n"
+printf -- "$KEYBOARDLANGUAGESETSTRING\n"
 printf -- "\n"
 printf -- "${ENDCOLOR}"
